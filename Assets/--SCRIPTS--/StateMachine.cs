@@ -6,11 +6,12 @@ namespace Characters
 {
     public class StateMachine
     {
-        public IState currentState;
+        public IState CurrentState;
+        public bool StateMachineActive = true;
 
-        private Dictionary<Type, List<Transition>> transitions = new Dictionary<Type, List<Transition>>();
-        private List<Transition> currentTransitions = new List<Transition>();
-        private List<Transition> anyTransitions = new List<Transition>();
+        private Dictionary<Type, List<Transition>> _transitions = new Dictionary<Type, List<Transition>>();
+        private List<Transition> _currentTransitions = new List<Transition>();
+        private List<Transition> _anyTransitions = new List<Transition>();
 
 
         private static List<Transition> EmptyTransitions = new List<Transition>(0);
@@ -23,15 +24,15 @@ namespace Characters
                 SetState(transition.To);
             }
 
-            currentState?.Tick();
+            CurrentState?.Tick();
         }
 
         public void SetState(IState state, int? value = null)
         {
-            if (state == currentState)
+            if (state == CurrentState || !StateMachineActive)
                 return;
 
-            currentState?.OnExit();
+            CurrentState?.OnExit();
 
             // Check if transitioning to Attack and set attack number if provided
             if (value.HasValue)
@@ -39,36 +40,36 @@ namespace Characters
                 state.InsertValue(value.Value);//Can be seen in IState. Can be overwritten.
             }
 
-            currentState = state;
+            CurrentState = state;
 
-            transitions.TryGetValue(currentState.GetType(), out currentTransitions);
-            if (currentTransitions == null)
-                currentTransitions = EmptyTransitions;
+            _transitions.TryGetValue(CurrentState.GetType(), out _currentTransitions);
+            if (_currentTransitions == null)
+                _currentTransitions = EmptyTransitions;
 
-            currentState.OnEnter();
+            CurrentState.OnEnter();
         }
 
         public void AddTransition(IState from, IState to, Func<bool> predicate)
         {
-            if (!transitions.TryGetValue(from.GetType(), out var _transitions))
+            if (!_transitions.TryGetValue(from.GetType(), out var transitions))
             {
-                _transitions = new List<Transition>();
-                transitions[from.GetType()] = _transitions;
+                transitions = new List<Transition>();
+                _transitions[from.GetType()] = transitions;
             }
 
-            _transitions.Add(new Transition(to, predicate));
+            transitions.Add(new Transition(to, predicate));
         }
 
         public void AddAnyTransition(IState state, Func<bool> predicate)
         {
-            anyTransitions.Add(new Transition(state, predicate));
+            _anyTransitions.Add(new Transition(state, predicate));
         }
 
 
 #nullable enable
         public void TriggerActionTransition(IState to, int? value = null, IState? from = null)
         {
-            if (from != null && currentState != from)
+            if (from != null && CurrentState != from)
             {
                 return;
             }
@@ -76,15 +77,16 @@ namespace Characters
         }
 #nullable disable
 
+
         private Transition GetTransition()
         {
             // Check any state transitions first, without calling triggers
-            foreach (var transition in anyTransitions)
+            foreach (var transition in _anyTransitions)
                 if (transition.Condition())
                     return transition;
 
             // Check current state transitions
-            foreach (var transition in currentTransitions)
+            foreach (var transition in _currentTransitions)
                 if (transition.Condition())
                     return transition;
 

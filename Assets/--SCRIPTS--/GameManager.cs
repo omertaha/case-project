@@ -9,6 +9,7 @@ namespace Managers
     public class GameManager : MonoBehaviour
     {
         //Public variables
+        public static Action RestartLevelOnDeath;
         public static Action RestartLevel;
 
         public static Action AllManagersReady;
@@ -91,6 +92,11 @@ namespace Managers
         private void EnablePlayer()
         {
             player.SetActive(true);
+        }
+
+        private void Death()
+        {
+
         }
 
         private void RestartMyLevel()

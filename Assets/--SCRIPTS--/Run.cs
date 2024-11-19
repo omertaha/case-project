@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Characters
+namespace Characters.PlayerStates
 {
     internal class Run : IState
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Characters
+namespace Characters.PlayerStates
 {
     internal class Death : IState
     {
@@ -17,6 +17,7 @@ namespace Characters
         public void OnEnter()
         {
             _stateMachine.StateMachineActive = false;
+            _animator.SetTrigger("Death");
         }
 
         public void OnExit()

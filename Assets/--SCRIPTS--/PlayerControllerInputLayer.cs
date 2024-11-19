@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Managers;
 
 
 namespace Characters
@@ -12,17 +11,9 @@ namespace Characters
         private float _startingTouchX;
         private bool _isTouching = false;
 
-        private float _minX;
-        private float _maxX;
-
         internal PlayerControllerInputLayer(Transform transfom)
         {
             _transform = transfom;
-
-            float _platformWidth = PlatformManager.Instance.platformWidth;
-
-            _minX = -_platformWidth / 2;
-            _maxX = _platformWidth / 2;
         }
 
         public void Tick()
@@ -90,7 +81,7 @@ namespace Characters
             Vector3 newPosition = _transform.position + moveDirection;
 
             // Clamp the x position between minX and maxX
-            newPosition.x = Mathf.Clamp(newPosition.x, _minX + 0.05f , _maxX - 0.05f);
+            newPosition.x = Mathf.Clamp(newPosition.x, -0.3f , 0.3f);
 
             _transform.position = newPosition;
         }

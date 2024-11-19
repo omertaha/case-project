@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Characters.PlayerStates;
-
+using Characters.AIStates;
 
 namespace Characters
 {
-    public class Player : Character
+    public class AI : Character
     {
-
         protected override void LoadStateMachine()
         {
             IState _run;
@@ -16,8 +14,8 @@ namespace Characters
 
             base.LoadStateMachine();
 
-            _run = new Run(this.transform, _animator);
-            _death = new Death(_stateMachine, _animator);
+            _run = new Run(_animator, this.transform);
+            _death = new Death();
 
             _stateMachine.SetState(_run);
         }

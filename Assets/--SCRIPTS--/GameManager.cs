@@ -48,7 +48,6 @@ namespace Managers
             if (_instance == null)
             {
                 _instance = this;
-                DontDestroyOnLoad(gameObject); // Keep the GameManager across scenes
             }
             else if (_instance != this)
             {

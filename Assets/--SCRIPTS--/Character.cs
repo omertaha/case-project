@@ -5,10 +5,12 @@ using System;
 namespace Characters
 {
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Rigidbody))]
     public class Character : MonoBehaviour
     {
         protected StateMachine _stateMachine;
         protected Animator _animator;
+        protected Rigidbody _rigidBody;
 
 
         private void OnEnable()
@@ -25,6 +27,10 @@ namespace Characters
         protected virtual void LoadComponents()
         {
             _animator = this.GetComponent<Animator>();
+
+            _rigidBody = this.GetComponent<Rigidbody>();
+            _rigidBody.useGravity = false;
+            _rigidBody.freezeRotation = true;
         }
 
         protected virtual void LoadStateMachine()

@@ -8,7 +8,7 @@ namespace Obstacles
     {
         private enum OnCollision
         {
-            RESTART,
+            DEATH,
             CHANGEPARTICLEMATERIAL,
             NOTHING
         }
@@ -21,7 +21,7 @@ namespace Obstacles
         {
             switch (_myCollisionType)
             {
-                case OnCollision.RESTART:
+                case OnCollision.DEATH:
                     GameManager.RestartLevel?.Invoke();
                     break;
                 case OnCollision.CHANGEPARTICLEMATERIAL:

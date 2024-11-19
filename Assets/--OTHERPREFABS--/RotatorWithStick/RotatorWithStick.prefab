@@ -11,7 +11,10 @@ GameObject:
   - component: {fileID: 2440684589201963449}
   - component: {fileID: 1617027727509435932}
   - component: {fileID: 3572517166919500502}
-  m_Layer: 0
+  - component: {fileID: 8006448803332844042}
+  - component: {fileID: 5502336734779928135}
+  - component: {fileID: 639391087518004682}
+  m_Layer: 6
   m_Name: RotatorWithStick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 3068320372544201475}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.027136995, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8797005151993216617}
   m_Father: {fileID: 0}
@@ -84,6 +87,54 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &8006448803332844042
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068320372544201475}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4ea1a890f092c594e97d8f14176281cc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5502336734779928135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068320372544201475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d75ccfdc0e6a741bc18fa01e73b098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myCollisionType: 0
+--- !u!64 &639391087518004682
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068320372544201475}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7554973115994324875, guid: 0c75a08642589ae47afcc42c7ffe37aa, type: 3}
 --- !u!1001 &9011777250952755272
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,8 +190,44 @@ PrefabInstance:
       propertyPath: m_Name
       value: RotatingStick
       objectReference: {fileID: 0}
+    - target: {fileID: 886838138400038043, guid: 14ffe4fc7f88ed148a30e23b2869b49e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14ffe4fc7f88ed148a30e23b2869b49e, type: 3}
+--- !u!1 &8169227630435263699 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 886838138400038043, guid: 14ffe4fc7f88ed148a30e23b2869b49e, type: 3}
+  m_PrefabInstance: {fileID: 9011777250952755272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &4620470124183639450
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8169227630435263699}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.007
+  m_Height: 0.11
+  m_Direction: 2
+  m_Center: {x: 2.3283064e-10, y: 0.0000000034924597, z: 0.07526629}
+--- !u!114 &2438207361385715532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8169227630435263699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d75ccfdc0e6a741bc18fa01e73b098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myCollisionType: 2
 --- !u!4 &8797005151993216617 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 505949320959886881, guid: 14ffe4fc7f88ed148a30e23b2869b49e, type: 3}

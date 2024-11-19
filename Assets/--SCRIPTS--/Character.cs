@@ -45,6 +45,7 @@ namespace Characters
         protected virtual void Update()
         {
             _stateMachine.Tick();
+            _rigidBody.velocity = new Vector3(0, 0, 0);
         }
     }
 }

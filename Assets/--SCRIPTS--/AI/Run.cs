@@ -7,13 +7,16 @@ namespace Characters.AIStates
 
         private Animator _animator;
         private Transform _transform;
-        private float _moveSpeed = Random.Range(1,2);
-        private float _raycastDistance = Random.Range(1, 3);
+        float _detectionRadius = Random.Range(0.2f, 2f);
+        private float _clampLeft = Random.Range(-0.1f, -0.3f);
+        private float _clampRight = Random.Range(0.1f, 0.3f);
+        LayerMask _avoidanceLayer;
 
         internal Run(Animator animator, Transform transform)
         {
             _animator = animator;
             _transform = transform;
+            _avoidanceLayer = (1 << 7);
         }
 
         public void OnEnter()
@@ -28,35 +31,39 @@ namespace Characters.AIStates
 
         public void Tick()
         {
+            MoveForward();
             AvoidObstacles();
-
-#if UNITY_EDITOR
-            DrawDebugRays();
-#endif
-
         }
 
         private void AvoidObstacles()
         {
-            RaycastHit hit;
-            bool obstacleAhead = Physics.Raycast(_transform.position, _transform.forward, out hit, _raycastDistance);
-            bool obstacleLeft = Physics.Raycast(_transform.position, -_transform.right, out hit, _raycastDistance);
-            bool obstacleRight = Physics.Raycast(_transform.position, _transform.right, out hit, _raycastDistance);
+            Collider[] obstacles = Physics.OverlapSphere(_transform.position, _detectionRadius, _avoidanceLayer);
+            Vector3 avoidanceDirection = Vector3.zero;
 
-            if (obstacleAhead)
+            foreach (Collider obstacle in obstacles)
             {
-                if (!obstacleRight)
+                Vector3 directionToObstacle = obstacle.transform.position - _transform.position;
+
+                //Checking if the obstacle is on the right or on the left
+                if (Vector3.Dot(directionToObstacle, _transform.right) > 0)
                 {
-                    _transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+                    avoidanceDirection += -_transform.right;
                 }
-                else if (!obstacleLeft)
+                else
                 {
-                    _transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+                    avoidanceDirection += _transform.right;
                 }
             }
-            else
+
+            if (avoidanceDirection != Vector3.zero)
             {
-                MoveForward();
+                float moveSpeed = Random.Range(0.01f,1f);
+
+                Vector3 newPosition = _transform.position + (avoidanceDirection.normalized * moveSpeed * Time.deltaTime);
+
+                // Clamp the X position to keep the AI within bounds
+                newPosition.x = Mathf.Clamp(newPosition.x, _clampLeft, _clampRight);
+                _transform.position = newPosition;
             }
         }
 
@@ -64,14 +71,6 @@ namespace Characters.AIStates
         {
             Vector3 runForward = Vector3.forward * 1f * Time.deltaTime;
             _transform.Translate(runForward);
-        }
-
-        private void DrawDebugRays()
-        {
-            // Draw forward, left, and right rays to visualize obstacle detection
-            Debug.DrawRay(_transform.position, _transform.forward * _raycastDistance, Color.red);    // Forward ray
-            Debug.DrawRay(_transform.position, -_transform.right * _raycastDistance, Color.red);   // Left ray
-            Debug.DrawRay(_transform.position, _transform.right * _raycastDistance, Color.red);   // Right ray
         }
     }
 }

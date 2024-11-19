@@ -21,6 +21,11 @@ namespace Characters
 
             _stateMachine.SetState(_run);
         }
+
+        protected override void LoadComponents()
+        {
+            base.LoadComponents();
+        }
     }
 }
 

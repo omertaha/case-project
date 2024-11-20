@@ -4,13 +4,13 @@ namespace Characters.AIStates
 {
     internal class Run : IState
     {
-
         private Animator _animator;
         private Transform _transform;
-        float _detectionRadius = Random.Range(0.2f, 2f);
-        private float _clampLeft = Random.Range(-0.1f, -0.3f);
-        private float _clampRight = Random.Range(0.1f, 0.3f);
+        private float _detectionRadius = Random.Range(0.2f, 2f);
+        private float _clampLeft;
+        private float _clampRight;
         LayerMask _avoidanceLayer;
+        private bool _obstacleDetectedLastFrame = false;//To random clamp values every time we detect an obstacle.
 
         internal Run(Animator animator, Transform transform)
         {
@@ -40,11 +40,22 @@ namespace Characters.AIStates
             Collider[] obstacles = Physics.OverlapSphere(_transform.position, _detectionRadius, _avoidanceLayer);
             Vector3 avoidanceDirection = Vector3.zero;
 
+            bool obstacleDetected = obstacles.Length > 0;
+
+            // Randomize clamping values only on new obstacle encounter
+            if (obstacleDetected && !_obstacleDetectedLastFrame)
+            {
+                _clampLeft = Random.Range(-0.1f, -0.3f);
+                _clampRight = Random.Range(0.1f, 0.3f);
+            }
+
+            _obstacleDetectedLastFrame = obstacleDetected;
+
             foreach (Collider obstacle in obstacles)
             {
                 Vector3 directionToObstacle = obstacle.transform.position - _transform.position;
 
-                //Checking if the obstacle is on the right or on the left
+                // Checking if the obstacle is on the right or on the left
                 if (Vector3.Dot(directionToObstacle, _transform.right) > 0)
                 {
                     avoidanceDirection += -_transform.right;
@@ -57,11 +68,11 @@ namespace Characters.AIStates
 
             if (avoidanceDirection != Vector3.zero)
             {
-                float moveSpeed = Random.Range(0.01f,1f);
+                float moveSpeed = Random.Range(0.01f, 1f);
 
                 Vector3 newPosition = _transform.position + (avoidanceDirection.normalized * moveSpeed * Time.deltaTime);
 
-                // Clamp the X position to keep the AI within bounds
+                //To add some randomness to where they stand...
                 newPosition.x = Mathf.Clamp(newPosition.x, _clampLeft, _clampRight);
                 _transform.position = newPosition;
             }

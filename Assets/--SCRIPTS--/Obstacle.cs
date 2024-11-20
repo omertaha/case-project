@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.Events;
-using Managers;
+using Characters;
+
 
 namespace Obstacles
 {
@@ -19,18 +19,22 @@ namespace Obstacles
 
         private void OnCollisionEnter(Collision collision)
         {
-            switch (_myCollisionType)
+            if (collision.gameObject.TryGetComponent(out Character character))
             {
-                case OnCollision.DEATH:
-                    GameManager.RestartLevel?.Invoke();
-                    break;
-                case OnCollision.CHANGEPARTICLEMATERIAL:
-                    break;
-                case OnCollision.NOTHING:
-                    break;
-                default:
-                    break;
+                switch (_myCollisionType)
+                {
+                    case OnCollision.DEATH:
+                        character.TriggerState?.Invoke("Hit");
+                        break;
+                    case OnCollision.CHANGEPARTICLEMATERIAL:
+                        break;
+                    case OnCollision.NOTHING:
+                        break;
+                    default:
+                        break;
+                }
             }
+            
         }
     }
 }

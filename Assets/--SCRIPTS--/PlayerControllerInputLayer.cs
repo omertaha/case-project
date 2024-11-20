@@ -80,9 +80,6 @@ namespace Characters
             Vector3 moveDirection = Vector3.right * deltaX * 0.25f * Time.deltaTime;
             Vector3 newPosition = _transform.position + moveDirection;
 
-            // Clamp the x position between minX and maxX
-            newPosition.x = Mathf.Clamp(newPosition.x, -0.3f , 0.3f);
-
             _transform.position = newPosition;
         }
     }

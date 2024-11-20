@@ -9,15 +9,15 @@ namespace Characters
     {
         protected override void LoadStateMachine()
         {
-            IState _run;
-            IState _death;
-
             base.LoadStateMachine();
 
-            _run = new Run(_animator, this.transform);
-            _death = new Death();
+            IState run = new Run(_animator, this.transform);
+            IState hit = new Hit(this.transform, this, _stateMachine, _animator);
 
-            _stateMachine.SetState(_run);
+            RegisterState("Run", run);
+            RegisterState("Hit", hit);
+
+            _stateMachine.SetState(run);
         }
     }
 }

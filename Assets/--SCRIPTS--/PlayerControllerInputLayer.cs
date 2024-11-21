@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// I always create this kind of a layer for control inputs.
+/// </summary>
 namespace Characters
 {
     internal class PlayerControllerInputLayer

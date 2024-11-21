@@ -2,6 +2,12 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+
+/// <summary>
+/// I learned this from a famous Youtuber long ago. (Jason Weimann)
+/// Over the years I perfected it.
+/// I use it almost in all my projects.
+/// </summary>
 namespace Characters
 {
     public class StateMachine

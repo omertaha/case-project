@@ -13,17 +13,22 @@ namespace Managers
         public static Action RestartLevel;
 
         public static Action AllManagersReady;
+        public static Action TriggerPaintingMode;
+        public static Action TriggerGameEnd;
 
+        public static Action CoinCollected;
 
+        public static Action<int> Failed;
         //Private variables
+        private static int _fails = 0;
+        public int CollectedCoins { get; private set; } = 0;
+
         [SerializeField]
         private List<ManagerBase> _managers = new List<ManagerBase>();
-        private int readyCount = 0;
+        private int _readyCount = 0;
 
         [SerializeField]
-        private GameObject player;
-
-        
+        private GameObject _player;   
 
         #region Turn into Singleton
         private static GameManager _instance;
@@ -48,6 +53,7 @@ namespace Managers
             if (_instance == null)
             {
                 _instance = this;
+
             }
             else if (_instance != this)
             {
@@ -57,7 +63,12 @@ namespace Managers
         }
         #endregion
 
+        private void Start()
+        {
+            Failed?.Invoke(_fails);//To refresh fail int in the beginning.
+        }
 
+        //I wait until necessary managers say they are ready. Then I can start the game.
         private void OnEnable()
         {
             foreach (var manager in _managers)
@@ -65,7 +76,9 @@ namespace Managers
                 manager.Ready += OnAllManagersReady;
             }
 
+            CoinCollected += IncrementCoin;
             RestartLevel += RestartMyLevel;
+            TriggerGameEnd += GameEnd;
         }
 
         private void OnDisable()
@@ -75,32 +88,42 @@ namespace Managers
                 manager.Ready -= OnAllManagersReady;
             }
 
+            CoinCollected -= IncrementCoin;
             RestartLevel -= RestartMyLevel;
+            TriggerGameEnd -= GameEnd;
         }
 
         private void OnAllManagersReady()
         {
-            readyCount++;
-            if(readyCount >= _managers.Count)
+            _readyCount++;
+            if(_readyCount >= _managers.Count)
             {
-                AllManagersReady?.Invoke();//Can be used in the future.
+                AllManagersReady?.Invoke();
                 EnablePlayer();
             }
         }
 
         private void EnablePlayer()
         {
-            player.SetActive(true);
+            _player.SetActive(true);
         }
 
-        private void Death()
+        private void IncrementCoin()
         {
-
+            CollectedCoins++;
         }
+
 
         private void RestartMyLevel()
         {
+            _fails++;
+            Failed?.Invoke(_fails);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        private void GameEnd()
+        {
+            //Do Nothing.
         }
     }
 }

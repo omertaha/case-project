@@ -8,7 +8,10 @@ namespace Managers
         public Action Ready;
     }
 
-
+    /// <summary>
+    /// All Managers are singleton classes. Some of them DontDestroyOnLoad.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Manager<T> : ManagerBase where T : Manager<T>
     {
         private static T _instance;
@@ -20,10 +23,6 @@ namespace Managers
                 {
                     _instance = FindObjectOfType<T>();
 
-                    if (_instance == null)
-                    {
-                        Debug.LogError($"Instance of {typeof(T)} is required in the scene but is missing.");
-                    }
                 }
                 return _instance;
             }

@@ -6,7 +6,7 @@ namespace Characters.AIStates
     {
         private Animator _animator;
         private Transform _transform;
-        private float _detectionRadius = Random.Range(0.2f, 2f);
+        private float _detectionRadius = Random.Range(0.5f, 2f);
         private float _clampLeft;
         private float _clampRight;
         LayerMask _avoidanceLayer;
@@ -68,7 +68,7 @@ namespace Characters.AIStates
 
             if (avoidanceDirection != Vector3.zero)
             {
-                float moveSpeed = Random.Range(0.01f, 1f);
+                float moveSpeed = Random.Range(0.1f, 0.35f);
 
                 Vector3 newPosition = _transform.position + (avoidanceDirection.normalized * moveSpeed * Time.deltaTime);
 

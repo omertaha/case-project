@@ -1,6 +1,8 @@
+using Cinemachine;
 using UnityEngine;
+using Managers;
 
-namespace Camera
+namespace Misc
 {
     public class CameraFollow : MonoBehaviour
     {

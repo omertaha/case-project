@@ -13,7 +13,6 @@ namespace Managers
         private void Start()
         {
             SpawnAICharacters();
-            Ready?.Invoke();
         }
 
         private void SpawnAICharacters()

@@ -6,6 +6,7 @@ using UnityEngine;
 /// I didn't write this class. I picked parts of it from several coders on the web and put it together.
 /// I use this tool in my every project.
 /// Maybe it can be better performance-wise in the future.
+/// Or maybe instead of Update, I could use IENumerators.
 /// *Taha*
 /// </summary>
 namespace Misc

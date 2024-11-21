@@ -5,13 +5,15 @@ namespace Characters.AIStates
 {
     internal class Hit : IState
     {
+        private CapsuleCollider _capsuleCollider;
         private Transform _transform;
         private Character _character;
         private StateMachine _stateMachine;
         private Animator _animator;
 
-        internal Hit(Transform transform, Character character, StateMachine stateMachine, Animator animator)
+        internal Hit(CapsuleCollider capsuleCollider, Transform transform, Character character, StateMachine stateMachine, Animator animator)
         {
+            _capsuleCollider = capsuleCollider;
             _transform = transform;
             _character = character;
             _stateMachine = stateMachine;
@@ -20,6 +22,7 @@ namespace Characters.AIStates
 
         public void OnEnter()
         {
+            _capsuleCollider.enabled = false;
             _stateMachine.StateMachineActive = false;
             _animator.SetTrigger("Hit");
 
@@ -28,7 +31,7 @@ namespace Characters.AIStates
 
         public void OnExit()
         {
-
+            _capsuleCollider.enabled = true;
         }
 
         public void Tick()
